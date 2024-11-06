@@ -285,8 +285,8 @@ def main():
     print(f"Total de experimentos a executar: {len(pars_combinacoes)}")
 
     # Parâmetros fixos
-    epochs = 100
-    patience = 20
+    epochs = 20
+    patience = 5
 
     # Iterando as cobinações de parâmetro
     for pars in pars_combinacoes:
