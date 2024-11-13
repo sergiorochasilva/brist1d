@@ -1,13 +1,13 @@
 import pandas as pd
 import numpy as np
 
-ds = pd.read_csv("dataset/train.csv", header=0)
+ds = pd.read_csv("dataset/train_corrigido.csv", header=0)
 
 ds["id_num"] = ds["id"].str[4:].astype(int)
 ds = ds.sort_values(by=["p_num", "id_num"], ascending=[True, True])
 
-# vars = ["bg", "insulin", "carbs", "hr", "steps", "cals"]
-vars = ["bg"]
+vars = ["insulin"]
+# vars = ["bg", "carbs", "hr", "steps", "cals"]
 time_tags = [
     "0:05",
     "0:10",
@@ -129,4 +129,4 @@ for var in vars:
             print("Corrigido", var)
             break
 
-ds.to_csv("dataset/train_corrigido.csv", index=False)
+ds.to_csv("dataset/train_corrigido_bg_insulimn.csv", index=False)
