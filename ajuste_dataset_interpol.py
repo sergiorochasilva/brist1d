@@ -1,10 +1,11 @@
 import pandas as pd
-
-# import numpy as np
+import numpy as np
 
 
 # Função para aplicar a média dos 5 valores mais próximos
 def preencher_nan_com_interpolacao(df, coluna_valor, num_vizinhos=5):
+    media_desvio = {}
+
     # Para cada índice `NaN`, encontra os vizinhos e calcula a média
     lista_nulls = df[df[coluna_valor].isna()].index
     print("Total", coluna_valor, len(lista_nulls))
@@ -28,6 +29,18 @@ def preencher_nan_com_interpolacao(df, coluna_valor, num_vizinhos=5):
             df.at[idx, coluna_valor] = df.loc[
                 vizinhos_idx_proximos, coluna_valor
             ].mean()
+        else:
+            print("Corrigido, usando a normal")
+            p_num = df.iloc[idx]["p_num"]
+            if p_num not in media_desvio:
+                filtrado = df["p_num"] == "A"
+                media = df.loc[filtrado, coluna_valor].mean()
+                std = df.loc[filtrado, coluna_valor].std()
+                media_desvio[p_num] = (media, std)
+
+            media, std = media_desvio[p_num]
+            valor_sorteado = np.random.normal(media, std)
+            df.at[idx, coluna_valor] = valor_sorteado
 
     return df
 
@@ -38,10 +51,10 @@ cols = [
     ("bg-0:00", 7),
     # ("insulin-0:00", 100000),
     # ("hr-0:00", 1000),
-    ("cals-0:00", 7),
+    # ("cals-0:00", 7),
 ]
 
 for col, qtd in cols:
     preencher_nan_com_interpolacao(ds, col, qtd)
 
-ds.to_csv("dataset/train_corrigido_interpol.csv", index=False)
+ds.to_csv("dataset/train_corrigido_interpol_normal.csv", index=False)
