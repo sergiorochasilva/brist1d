@@ -308,7 +308,7 @@ def main():
             processo = Process(
                 target=run_experiment,
                 args=(
-                    "brist1d_test_2",
+                    "brist1d_v2_v1",
                     x,
                     y,
                     x_t,
